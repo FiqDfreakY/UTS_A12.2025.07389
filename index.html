@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Kenalan sama kopi Indonesia: jenis biji, daerah penghasil, sejarah, proses pengolahan, kuis rasa, dan kalkulator seduh.">
+  <title>Kopi Pelan | Kenalan sama Kopi Nusantara</title>
+  <link rel="icon" type="image/svg+xml" href="favicon/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+  <!-- Bootstrap 5.3 (salinan lokal; CDN: https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css) -->
+  <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="progress" aria-hidden="true"></div>
+
+  <header class="top">
+    <div class="wrap bar">
+      <a class="brand" href="#atas">Kopi Pelan</a>
+      <nav id="nav" class="nav" aria-label="Navigasi utama">
+        <a href="#nusantara">Kopi Nusantara</a>
+        <a href="#sejarah">Sejarah</a>
+        <a href="#proses">Proses</a>
+        <a href="#kuis">Kuis</a>
+        <a href="#seduh">Seduh</a>
+        <a href="#glosarium">Glosarium</a>
+        <a href="#daftar">Daftar</a>
+      </nav>
+      <div class="tools">
+        <button class="ghost icon-btn" id="themeBtn" type="button" aria-pressed="false" aria-label="Ganti ke mode gelap" title="Ganti tema"></button>
+        <button class="ghost menu-btn" id="menuBtn" aria-expanded="false" aria-controls="nav">Menu</button>
+      </div>
+    </div>
+  </header>
+
+  <main id="atas">
+    <section class="hero" id="hero">
+      <div class="wrap hero-grid">
+        <div class="hero-text">
+          <h1>Kopi itu soal seberapa lama biji disangrai.</h1>
+          <p>Geser slider dan lihat warna, rasa, dan karakter kopi berubah dari sangrai terang sampai gelap.</p>
+          <a class="btn" href="#nusantara">Jelajahi kopi Indonesia</a>
+        </div>
+        <div class="roast-panel">
+          <label for="roast">Tingkat sangrai</label>
+          <input type="range" id="roast" min="0" max="4" step="1" value="2">
+          <div class="roast-scale" aria-hidden="true"><span>Terang</span><span>Gelap</span></div>
+          <h2 id="roastName">Medium</h2>
+          <dl class="roast-info">
+            <div><dt>Rasa</dt><dd id="roastNotes"></dd></div>
+            <div><dt>Keasaman</dt><dd id="roastAcid"></dd></div>
+            <div><dt>Body</dt><dd id="roastBody"></dd></div>
+            <div><dt>Pahit</dt><dd id="roastBitter"></dd></div>
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="nusantara">
+      <div class="wrap split">
+        <div class="split-head static">
+          <h2>Kopi Nusantara</h2>
+          <p class="intro">Indonesia punya banyak daerah penghasil dengan karakter beda-beda. Cari, filter, urutkan, simpan favoritmu, atau klik detail.</p>
+
+          <div class="filters">
+            <div class="fgroup">
+              <label class="fl" for="search">Cari kopi</label>
+              <input type="search" id="search" placeholder="Contoh: Gayo, cokelat, citrus">
+            </div>
+            <div class="fgroup">
+              <p class="fl" id="regLabel">Wilayah</p>
+              <div class="chips" id="chips" role="group" aria-labelledby="regLabel"></div>
+            </div>
+            <div class="fgroup">
+              <label class="fl" for="sort">Urutkan</label>
+              <select id="sort">
+                <option value="nama">Nama A-Z</option>
+                <option value="jenis">Jenis biji</option>
+                <option value="region">Wilayah</option>
+              </select>
+            </div>
+            <label class="check box">
+              <input type="checkbox" id="onlyFav">
+              <span>Hanya favorit</span>
+              <b id="favCount">0</b>
+            </label>
+          </div>
+        </div>
+
+        <div class="split-body">
+          <div class="slider" role="region" aria-roledescription="carousel" aria-label="Daftar kopi nusantara">
+            <div class="slider-bar">
+              <p class="status" id="count" aria-live="polite"></p>
+              <div class="sbtns">
+                <button class="sbtn" id="prevBtn" type="button" aria-label="Geser ke kiri">&#8592;</button>
+                <button class="sbtn" id="nextBtn" type="button" aria-label="Geser ke kanan">&#8594;</button>
+              </div>
+            </div>
+            <div class="track" id="kopiGrid" tabindex="0" aria-label="Daftar kopi, geser ke samping untuk melihat lainnya"></div>
+            <div class="slider-foot">
+              <div class="sprog" aria-hidden="true"><div id="sBar"></div></div>
+              <p class="status" id="slideInfo"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section s-tint" id="bandingkan">
+      <div class="wrap split">
+        <div class="split-head">
+          <h2>Bandingkan dua kopi</h2>
+          <p class="intro">Pilih dua kopi dan lihat perbedaannya berdampingan.</p>
+          <div class="cmp-pick">
+            <div><label for="cmpA">Kopi pertama</label><select id="cmpA"></select></div>
+            <div><label for="cmpB">Kopi kedua</label><select id="cmpB"></select></div>
+          </div>
+        </div>
+        <div class="split-body">
+          <div class="table-scroll" tabindex="0" aria-label="Tabel perbandingan, bisa digeser" aria-live="polite" id="cmpOut"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="biji">
+      <div class="wrap split">
+        <div class="split-head">
+          <h2>Empat spesies biji kopi</h2>
+          <p class="intro">Hampir semua kopi berasal dari dua spesies utama, dua lainnya lebih jarang tapi ada di Indonesia.</p>
+          <p class="note">Angka kafein perkiraan umum, bisa beda tiap kebun.</p>
+        </div>
+        <div class="split-body">
+          <div class="table-scroll" tabindex="0" aria-label="Tabel jenis biji, bisa digeser">
+            <table>
+              <thead><tr><th scope="col">Jenis</th><th scope="col">Rasa umum</th><th scope="col">Tumbuh di</th><th scope="col">Kafein</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Arabika</th><td>Manis, asam buah, floral</td><td>Dataran tinggi, di atas 900 mdpl</td><td>Sekitar 1,2%</td></tr>
+                <tr><th scope="row">Robusta</th><td>Pahit, tebal, cokelat gelap</td><td>Dataran rendah, tahan hama</td><td>Sekitar 2,2%</td></tr>
+                <tr><th scope="row">Liberika</th><td>Smoky, nangka, herbal</td><td>Dataran rendah, lahan gambut</td><td>Sekitar 1,3%</td></tr>
+                <tr><th scope="row">Excelsa</th><td>Asam gelap, fruity</td><td>Ketinggian menengah</td><td>Sekitar 1,2%</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section s-tint" id="sejarah">
+      <div class="wrap split">
+        <div class="split-head">
+          <h2>Sejarah singkat kopi Indonesia</h2>
+          <p class="intro">Klik tiap periode untuk membaca ceritanya.</p>
+        </div>
+        <div class="split-body"><div class="tabs" id="tabSejarah"></div></div>
+      </div>
+    </section>
+
+    <section class="section" id="proses">
+      <div class="wrap split">
+        <div class="split-head">
+          <h2>Proses pengolahan: kenapa rasanya beda?</h2>
+          <p class="intro">Setelah dipetik, buah kopi diolah dulu sebelum jadi biji hijau. Caranya sangat memengaruhi rasa di cangkir.</p>
+        </div>
+        <div class="split-body"><div class="tabs" id="tabProses"></div></div>
+      </div>
+    </section>
+
+    <section class="section s-tint" id="kuis">
+      <div class="wrap split">
+        <div class="split-head">
+          <h2>Kuis: kopi mana yang cocok buatmu?</h2>
+          <p class="intro">Jawab tiga pertanyaan singkat, nanti kami carikan kopi yang paling pas.</p>
+        </div>
+        <div class="split-body"><div class="quiz" id="quiz" aria-live="polite"></div></div>
+      </div>
+    </section>
+
+    <section class="section" id="seduh">
+      <div class="wrap split">
+        <div class="split-head">
+          <h2>Kalkulator &amp; timer seduh</h2>
+          <p class="intro">Pilih metode, jumlah cangkir, dan kekuatan. Takaran muncul otomatis, lalu pakai timer saat menyeduh.</p>
+          <div class="timer">
+            <p class="clock" id="clock" role="timer">00:00</p>
+            <button class="btn" id="tStart" type="button">Mulai</button>
+            <button class="ghost" id="tReset" type="button">Reset</button>
+          </div>
+        </div>
+        <div class="split-body">
+          <form class="calc" id="calc">
+            <label for="method">Metode</label>
+            <select id="method">
+              <option value="v60">V60 (pour over)</option>
+              <option value="fp">French press</option>
+              <option value="tubruk">Tubruk</option>
+              <option value="espresso">Espresso</option>
+            </select>
+            <label for="cups">Jumlah cangkir (1 sampai 12)</label>
+            <input type="number" id="cups" min="1" max="12" value="1" inputmode="numeric">
+            <p class="error" id="cupsErr" role="alert"></p>
+            <label for="strength">Kekuatan</label>
+            <select id="strength">
+              <option value="1.1">Lembut</option>
+              <option value="1" selected>Normal</option>
+              <option value="0.9">Kuat</option>
+            </select>
+            <div class="result" aria-live="polite">
+              <p class="big"><span id="outCoffee">0</span> g kopi</p>
+              <p class="big"><span id="outWater">0</span> ml air</p>
+              <ul>
+                <li>Rasio: <b id="outRatio"></b></li>
+                <li>Gilingan: <b id="outGrind"></b></li>
+                <li>Suhu air: <b id="outTemp"></b></li>
+                <li>Waktu: <b id="outTime"></b></li>
+              </ul>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="section s-tint" id="langkah">
+      <div class="wrap split">
+        <div class="split-head">
+          <h2>Checklist seduh V60</h2>
+          <p class="intro">Centang tiap langkah sambil menyeduh.</p>
+        </div>
+        <div class="split-body">
+          <div class="prog"><div id="stepBar"></div></div>
+          <p class="status" id="stepText" aria-live="polite">0 dari 5 langkah</p>
+          <ol class="steps">
+            <li><label><input type="checkbox"><span><b>Bilas filter</b> dengan air panas lalu buang airnya.</span></label></li>
+            <li><label><input type="checkbox"><span><b>Masukkan kopi</b> giling medium-halus, ratakan.</span></label></li>
+            <li><label><input type="checkbox"><span><b>Bloom</b>: air dua kali berat kopi, tunggu 30 detik.</span></label></li>
+            <li><label><input type="checkbox"><span><b>Tuang bertahap</b> melingkar pelan sampai takaran tercapai.</span></label></li>
+            <li><label><input type="checkbox"><span><b>Tunggu tetesan habis</b> sekitar 2,5 sampai 3 menit.</span></label></li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="minuman">
+      <div class="wrap split">
+        <div class="split-head">
+          <h2>Minuman kopi khas Indonesia</h2>
+          <p class="intro">Dari warung kopi sampai kedai modern, ini beberapa yang paling dikenal.</p>
+        </div>
+        <div class="split-body">
+          <details>
+            <summary>Kopi tubruk</summary>
+            <p>Bubuk kopi halus diseduh langsung di gelas dengan air panas tanpa disaring. Ampasnya mengendap di dasar, jadi minumnya pelan-pelan dan jangan sampai habis.</p>
+          </details>
+          <details>
+            <summary>Kopi susu gula aren</summary>
+            <p>Kopi dicampur susu dan gula aren cair. Gaya minuman ini populer di kedai kopi modern dan jadi pintu masuk banyak orang ke dunia kopi.</p>
+          </details>
+          <details>
+            <summary>Kopi joss</summary>
+            <p>Khas Yogyakarta. Arang membara dicelupkan ke dalam kopi, dan banyak orang meyakini rasanya jadi lebih halus dan tidak terlalu asam.</p>
+          </details>
+          <details>
+            <summary>Sanger</summary>
+            <p>Kopi khas Aceh yang dicampur susu kental manis. Biasa disajikan di warung kopi yang jadi tempat ngobrol sehari-hari.</p>
+          </details>
+          <details>
+            <summary>Kopi luwak: perlu tahu sisi etikanya</summary>
+            <p>Biji kopi yang sudah dimakan dan dikeluarkan luwak. Karena permintaannya tinggi, ada praktik penangkaran yang dikritik soal kesejahteraan hewan, jadi pilih produk yang jelas asal-usulnya.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <section class="section s-tint" id="glosarium">
+      <div class="wrap split">
+        <div class="split-head">
+          <h2>Glosarium istilah kopi</h2>
+          <p class="intro">Bingung sama istilah barista? Cari di sini.</p>
+        </div>
+        <div class="split-body">
+          <label for="gSearch" class="gl">Cari istilah</label>
+          <input type="search" id="gSearch" placeholder="Contoh: bloom, body, cupping">
+          <p class="status" id="gCount" aria-live="polite"></p>
+          <dl id="glosList" class="glos"></dl>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="mitos">
+      <div class="wrap split">
+        <div class="split-head">
+          <h2>Mitos kopi yang sering dipercaya</h2>
+          <p class="intro">Klik tiap pernyataan untuk lihat benar atau salahnya.</p>
+        </div>
+        <div class="split-body">
+          <div class="myth">
+            <h3><button class="myth-q" aria-expanded="false" aria-controls="m1">Kopi gelap kafeinnya lebih banyak.</button></h3>
+            <div id="m1" class="myth-a" hidden><p><b>Salah.</b> Sangrai tidak banyak mengubah kafein. Pahitnya datang dari proses sangrai.</p></div>
+          </div>
+          <div class="myth">
+            <h3><button class="myth-q" aria-expanded="false" aria-controls="m2">Kopi bikin dehidrasi.</button></h3>
+            <div id="m2" class="myth-a" hidden><p><b>Kurang tepat.</b> Kopi sedikit diuretik, tapi airnya tetap menghidrasi dalam jumlah wajar.</p></div>
+          </div>
+          <div class="myth">
+            <h3><button class="myth-q" aria-expanded="false" aria-controls="m3">Air mendidih paling bagus buat seduh.</button></h3>
+            <div id="m3" class="myth-a" hidden><p><b>Salah.</b> Air 100°C bisa bikin kopi pahit dan gosong. Idealnya 90 sampai 96°C.</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="section s-tint" id="daftar">
+      <div class="wrap split">
+        <div class="split-head">
+          <h2>Daftar jadi pencicip kopi</h2>
+          <p class="intro">Isi data singkat di bawah ini. Kami kabari kalau ada acara cupping di kotamu.</p>
+        </div>
+        <div class="split-body">
+          <form id="formDaftar" novalidate>
+            <div class="row g-4">
+              <div class="col-md-6">
+                <label for="nama" class="form-label">Nama <span class="req" aria-hidden="true">*</span></label>
+                <input type="text" class="form-control" id="nama" name="nama" placeholder="Nama lengkap" autocomplete="name" required>
+                <div class="invalid-feedback">Nama wajib diisi.</div>
+              </div>
+              <div class="col-md-6">
+                <label for="kota" class="form-label">Kota <span class="req" aria-hidden="true">*</span></label>
+                <select class="form-select" id="kota" name="kota" required>
+                  <option value="" selected disabled>Pilih kota</option>
+                  <option value="Semarang">Semarang</option><option value="Kudus">Kudus</option><option value="Demak">Demak</option><option value="Pekalongan">Pekalongan</option><option value="Tegal">Tegal</option><option value="Surabaya">Surabaya</option><option value="Jakarta">Jakarta</option>
+                </select>
+                <div class="invalid-feedback">Pilih salah satu kota.</div>
+              </div>
+              <div class="col-12">
+                <label for="alamat" class="form-label">Alamat <span class="req" aria-hidden="true">*</span></label>
+                <textarea class="form-control" id="alamat" name="alamat" rows="3" placeholder="Jalan, nomor, kecamatan" required></textarea>
+                <div class="invalid-feedback">Alamat wajib diisi.</div>
+              </div>
+              <div class="col-12">
+                <p class="form-label mb-2" id="hobiLabel">Hobi <span class="opsional">(opsional)</span></p>
+                <div class="hobi-list" role="group" aria-labelledby="hobiLabel">
+                  <input class="hobi-input" type="checkbox" name="hobi" id="hobi0" value="Membaca"><label class="hobi-pill" for="hobi0">Membaca</label>
+                  <input class="hobi-input" type="checkbox" name="hobi" id="hobi1" value="Koding"><label class="hobi-pill" for="hobi1">Koding</label>
+                  <input class="hobi-input" type="checkbox" name="hobi" id="hobi2" value="Berenang"><label class="hobi-pill" for="hobi2">Berenang</label>
+                  <input class="hobi-input" type="checkbox" name="hobi" id="hobi3" value="Menggambar"><label class="hobi-pill" for="hobi3">Menggambar</label>
+                </div>
+              </div>
+              <div class="col-12 form-actions">
+                <button type="submit" class="btn btn-primary">Kirim data</button>
+                <button type="reset" class="btn btn-outline-secondary">Kosongkan</button>
+                <span class="form-hint"><span class="req" aria-hidden="true">*</span> wajib diisi</span>
+              </div>
+            </div>
+            <div class="alert alert-success mt-3 mb-0" id="formHasil" role="status" hidden></div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <dialog id="modal" aria-labelledby="mTitle">
+    <button class="close" id="mClose" aria-label="Tutup detail">Tutup</button>
+    <h2 id="mTitle"></h2>
+    <div id="mBody"></div>
+  </dialog>
+
+  <button id="toTop" type="button" aria-label="Kembali ke atas" title="Kembali ke atas"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+  <footer class="foot">
+    <div class="wrap foot-grid">
+      <p>Kopi Pelan, proyek UTS Pemrograman Web. Data bersifat informasi umum.</p>
+      <p class="identitas"><span>Nama: <strong>Roihan Syafiq Al Aziz</strong></span><span>NIM: <strong>A12.2025.07389</strong></span></p>
+    </div>
+  </footer>
+  <script src="script.js"></script>
+</body>
+</html>
